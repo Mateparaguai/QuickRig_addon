@@ -48,6 +48,8 @@ class Select_Deform_Disabled(bpy.types.Operator):
         for def_bone in all_bones:
             if def_bone.bone.deform == False:
                 def_bone.select = True
+            else:
+                def_bone.select = False
         return{'FINISHED'} 
 
 
