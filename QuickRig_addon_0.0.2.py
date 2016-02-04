@@ -46,7 +46,7 @@ class Select_Deform_Disabled(bpy.types.Operator):
     def execute(self, context): 
         all_bones = bpy.context.active_object.data
         for def_bone in all_bones:
-            if def_bone.bone.deform == False:
+            if def_bone.deform == True:
                 def_bone.select = True
             else:
                 def_bone.select = False
