@@ -12,14 +12,15 @@ class Bones_Setting(bpy.types.Panel):
 
     def draw(self, context): 
         layout = self.layout
-        layout.label("From selected")
+        layout.label("For selected bones")
         layout.operator("def_on.button") 
-        layout.operator("def_off.button") 
+        layout.operator("def_off.button")
+        layout.label("Select deform")
         layout.operator("sel_def_dis.button") 
 
 class Deform_on(bpy.types.Operator): 
     bl_idname = "def_on.button" 
-    bl_label = "Deform On" 
+    bl_label = "Enable Deform" 
    
     def execute(self, context): 
         act_bone = bpy.context.selected_pose_bones 
@@ -29,7 +30,7 @@ class Deform_on(bpy.types.Operator):
 
 class Deform_off(bpy.types.Operator): 
     bl_idname = "def_off.button" 
-    bl_label = "Deform Off" 
+    bl_label = "Disable Deform" 
 
 
     def execute(self, context): 
@@ -41,15 +42,13 @@ class Deform_off(bpy.types.Operator):
 
 class Select_Deform_Disabled(bpy.types.Operator): 
     bl_idname = "sel_def_dis.button" 
-    bl_label = "Select all deform disabled" 
+    bl_label = "Select all deform On" 
 
     def execute(self, context): 
         all_bones = bpy.context.active_object.data.bones
         for def_bone in all_bones:
             if def_bone.use_deform == True:
                 def_bone.select = True
-            else:
-                def_bone.select = False
         return{'FINISHED'} 
 
 
