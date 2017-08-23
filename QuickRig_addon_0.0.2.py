@@ -60,7 +60,7 @@ arm = bpy.context.active_object.data
 for bone in arm.bones:
     bone.select = False
 '''
-### v2 ###
+### v2 #################################################################################
 
 import bpy
 
