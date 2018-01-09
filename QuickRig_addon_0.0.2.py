@@ -1,10 +1,5 @@
 import bpy
 
-
-
-
-# POSE MODE PANEL
-
 class Bones_Setting(bpy.types.Panel): 
     bl_label = "RIG_HELPER" 
     bl_space_type = "VIEW_3D" 
