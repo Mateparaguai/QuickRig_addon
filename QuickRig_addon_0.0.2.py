@@ -78,20 +78,22 @@ class Del_all_constraints(bpy.types.Operator):
         return{'FINISHED'}        
 
 class Create_arms(bpy.types.Operator): 
-    bl_label = "Create arms" 
-   
+    bl_idname = "create_arms.button" 
+    bl_label = "Create arms"
+
     def execute(self, context): 
         sel_objs = bpy.context.selected_objects
-        pos = (0.0, 0.0, 0.0)
-        #arm = ob.data
     
         for m in sel_objs:
             pos = m.location
+            rot = m.rotation_euler
             bpy.ops.object.armature_add()
             ob = bpy.context.scene.objects.active
             ob.name = "AR" + m.name
             ob.location = pos
+            ob.rotation_euler = rot
         return{'FINISHED'} 
+
 
 class Deform_on(bpy.types.Operator): 
     bl_idname = "def_on.button" 
