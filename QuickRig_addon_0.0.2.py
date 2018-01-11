@@ -1,8 +1,21 @@
+bl_idname = "create_arms.button" 
+bl_info = {
+    "name": "RigHelper",
+    "description": "Make your work whith rig faster",
+    "author": "Mateparaguai",
+    "version": (0, 0, 1),
+    "blender": (2, 79, 1),
+    "location": "View3D",
+    "warning": "This addon is still in development.",
+    "wiki_url": "",
+    "category": "Object" }
+    
+
 import bpy
 
 # POSE MODE PANEL
 class Bones_Setting(bpy.types.Panel): 
-    bl_label = "RIG_HELPER" 
+    bl_label = "Rig_Helper" 
     bl_space_type = "VIEW_3D" 
     bl_region_type = "UI" 
 
@@ -25,7 +38,7 @@ class Bones_Setting(bpy.types.Panel):
         layout.label("Create vertex group for selected bones")
         layout.operator("create_bone_groups.button", icon = "GROUP_VERTEX") 
 
-class Del_all_constraints(bpy.types.Operator): 
+class Unmute_all_constraints(bpy.types.Operator): 
     bl_idname = "unmute_constraints.button" 
     bl_label = "Unmute all constraints" 
    
@@ -38,7 +51,7 @@ class Del_all_constraints(bpy.types.Operator):
                 n.mute = False
         return{'FINISHED'}
 
-class Del_all_constraints(bpy.types.Operator): 
+class Mute_all_constraints(bpy.types.Operator): 
     bl_idname = "mute_constraints.button" 
     bl_label = "Mute all constraints" 
    
@@ -65,7 +78,6 @@ class Del_all_constraints(bpy.types.Operator):
         return{'FINISHED'}        
 
 class Create_arms(bpy.types.Operator): 
-    bl_idname = "create_arms.button" 
     bl_label = "Create arms" 
    
     def execute(self, context): 
@@ -103,7 +115,7 @@ class Deform_off(bpy.types.Operator):
         return{'FINISHED'} 
 
 
-class Select_Deform_Disabled(bpy.types.Operator): 
+class Select_All_Deform_On(bpy.types.Operator): 
     bl_idname = "sel_def_dis.button" 
     bl_label = "Select all deform On" 
  
@@ -114,7 +126,7 @@ class Select_Deform_Disabled(bpy.types.Operator):
                 def_bone.select = True
         return{'FINISHED'} 
 
-class Select_Deform_Disabled(bpy.types.Operator): 
+class Create_Bone_Groups(bpy.types.Operator): 
     bl_idname = "create_bone_groups.button" 
     bl_label = "Create Bone Groups" 
 
