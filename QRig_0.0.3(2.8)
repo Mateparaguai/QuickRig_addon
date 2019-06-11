@@ -1,0 +1,168 @@
+bl_idname = "create_arms.button" 
+bl_info = {
+    "name": "RigHelper#",
+    "description": "Make your work whith rig faster",
+    "author": "Mateparaguai",
+    "version": (0, 0, 3),
+    "blender": (2, 80, 0),
+    "location": "View3D",
+    "warning": "This addon is still in development.",
+    "wiki_url": "",
+    "category": "Object" }
+    
+
+import bpy
+
+# POSE MODE PANEL
+class QRig_PT_Bones_Setting(bpy.types.Panel): 
+    bl_label = "Rig_Helper#" 
+    bl_space_type = "VIEW_3D" 
+    bl_region_type = "UI" 
+
+    def draw(self, context): 
+        layout = self.layout
+        
+        layout.label(text = "Create bones in origins of selected objects")
+        layout.operator("create_arms.button", icon = "GROUP_BONE") 
+        layout.label(text = "Mute all constraints for selected bones")
+        layout.operator("mute_constraints.button", icon = "RESTRICT_VIEW_ON")         
+        layout.label(text = "Unmute all constraints for selected bones")
+        layout.operator("unmute_constraints.button", icon = "RESTRICT_VIEW_OFF") 
+        layout.label(text = "Delete all consraints for selectes bones")
+        layout.operator("del_constraints.button", icon = "CONSTRAINT")         
+        layout.label(text = "For selected bones")
+        layout.operator("def_on.button", icon = "CHECKBOX_HLT") 
+        layout.operator("def_off.button",  icon = "CHECKBOX_DEHLT")
+        layout.label(text = "Select deform")
+        layout.operator("sel_def_dis.button", icon = "OUTLINER_OB_ARMATURE") 
+        layout.label(text = "Create vertex group for selected bones")
+        layout.operator("create_bone_groups.button", icon = "GROUP_VERTEX") 
+
+class QRig_OT_Unmute_all_constraints(bpy.types.Operator): 
+    bl_idname = "unmute_constraints.button" 
+    bl_label = "Unmute all constraints" 
+   
+    def execute(self, context):
+        sel_bones = bpy.context.selected_pose_bones
+
+        for i in sel_bones:
+            consList = i.constraints
+            for n in consList:
+                n.mute = False
+        return{'FINISHED'}
+
+class QRig_OT_Mute_all_constraints(bpy.types.Operator): 
+    bl_idname = "mute_constraints.button" 
+    bl_label = "Mute all constraints" 
+   
+    def execute(self, context):
+        sel_bones = bpy.context.selected_pose_bones
+
+        for i in sel_bones:
+            consList = i.constraints
+            for n in consList:
+                n.mute = True
+        return{'FINISHED'}    
+
+class QRig_OT_Del_all_constraints(bpy.types.Operator): 
+    bl_idname = "del_constraints.button" 
+    bl_label = "Delete all constraints" 
+   
+    def execute(self, context):
+        sel_bones = bpy.context.selected_pose_bones
+
+        for i in sel_bones:
+            consList = i.constraints
+            for n in consList:
+                i.constraints.remove(n)
+        return{'FINISHED'}        
+
+class QRig_OT_Create_arms(bpy.types.Operator): 
+    bl_idname = "create_arms.button" 
+    bl_label = "Create arms"
+
+    def execute(self, context): 
+        sel_objs = bpy.context.selected_objects
+    
+        for m in sel_objs:
+            pos = m.location
+            rot = m.rotation_euler
+            bpy.ops.object.armature_add()
+            ob = bpy.context.active_object
+            ob.name = "AR" + m.name
+            ob.location = pos
+            ob.rotation_euler = rot
+        return{'FINISHED'} 
+
+
+class QRig_OT_Deform_on(bpy.types.Operator): 
+    bl_idname = "def_on.button" 
+    bl_label = "Enable Deform" 
+   
+    def execute(self, context): 
+        act_bone = bpy.context.selected_pose_bones 
+        for deform in act_bone: 
+            deform.bone.use_deform = True 
+        return{'FINISHED'} 
+
+class QRig_OT_Deform_off(bpy.types.Operator): 
+    bl_idname = "def_off.button" 
+    bl_label = "Disable Deform" 
+
+
+    def execute(self, context): 
+        act_bone = bpy.context.selected_pose_bones 
+        for deform in act_bone: 
+            deform.bone.use_deform = False 
+        return{'FINISHED'} 
+
+
+class QRig_OT_Select_All_Deform_On(bpy.types.Operator): 
+    bl_idname = "sel_def_dis.button" 
+    bl_label = "Select all deform On" 
+ 
+    def execute(self, context): 
+        all_bones = bpy.context.active_object.data.bones
+        for def_bone in all_bones:
+            if def_bone.use_deform == True:
+                def_bone.select = True
+        return{'FINISHED'} 
+
+class QRig_OT_Create_Bone_Groups(bpy.types.Operator): 
+    bl_idname = "create_bone_groups.button" 
+    bl_label = "Create Bone Groups" 
+
+    def execute(self, context): 
+        a = bpy.context.selected_objects 
+        if a[0].type == 'MESH':
+            print(a[0], a[0].type)
+            mesh = a[0]
+        else:    
+            print(a[1], a[1].type)
+            mesh = a[1]
+
+        for renamer in bpy.context.selected_pose_bones:
+            mesh.vertex_groups.new(name =  renamer.bone.name)
+        return{'FINISHED'} 
+    
+
+classes = (
+    QRig_PT_Bones_Setting,
+    QRig_OT_Unmute_all_constraints,
+    QRig_OT_Mute_all_constraints,
+    QRig_OT_Del_all_constraints,
+    QRig_OT_Create_arms,
+    QRig_OT_Deform_on,
+    QRig_OT_Deform_off,
+    QRig_OT_Select_All_Deform_On,
+    QRig_OT_Create_Bone_Groups,
+)
+
+register, unregister = bpy.utils.register_classes_factory(classes)
+
+if __name__ == "__main__":
+        register()
+
+
+
+#bpy.utils.register_module(__name__)
