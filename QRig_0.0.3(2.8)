@@ -1,5 +1,5 @@
 bl_info = {
-    "name": "RigHelper#",
+    "name": "QRig",
     "description": "Make your work whith rig faster",
     "author": "Mateparaguai",
     "version": (0, 0, 3),
